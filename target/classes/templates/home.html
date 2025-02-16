@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+    <div class="welcome mt-1 mb-4">
+        <p th:text="${'Welcome, ' + loggedIn.username + '!'}" class="mySticky bg-gray text-dark user"></p>
+        <div class="row mt-1 mb-2">
+            <div class="col-6 mt-1 mb-1">
+                <div>
+                    <div class="home-fields" style="height: 40vh; overflow: auto">
+                        <h3 class="my-stamps">My Stamps</h3>
+                        <table class="my-table table-striped table-dark">
+                            <div th:each="stamp : ${loggedIn.myStamps}" th:object="${stamp}">
+                                <tr class="my-stamps">
+                                    <td>
+                                        <img th:src="@{${stamp.imageUrl}}"
+                                             alt="https://t4.ftcdn.net/jpg/06/32/52/81/240_F_632528193_8N5wScRTSIYpF9Gv7fccYXj810z0yazx.jpg"
+                                             width="70px"
+                                             height="70px">
+                                    </td>
+                                    <td th:text="${'Name: '+ stamp.name}" style="text-align: start"></td>
+                                    <td th:text="${'Description: '+ stamp.description}"
+                                        style="text-align: end; padding-right: 5px"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    <td th:text="${'Used paper: : '+ stamp.usedPaper}" style="text-align: start">Used
+                                        paper: {stampPaper}
+                                    </td>
+                                    <td th:text="${'Price: : '+ stamp.price + '$'}"
+                                        style="text-align: end; padding-right: 5px"></td>
+                                </tr>
+                            </div>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="home-fields" style="height: 39vh; overflow: auto">
+                        <h3 class="my-stamps">My Purchases</h3>
+                        <div class="bought">
+                            <div>
+                                <div class="stamp">
+                                    <div th:each="stamp : ${loggedIn.purchasedStamps}" th:object="${stamp}" class="item">
+                                        <img th:src="@{*{imageUrl}}" alt="https://t4.ftcdn.net/jpg/06/32/52/81/240_F_632528193_8N5wScRTSIYpF9Gv7fccYXj810z0yazx.jpg" width="100px"
+                                             height="100px">
+                                        <p th:text="*{name}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 mt-1 mb-1">
+                <div class="home-fields" style="height: 40vh; overflow: auto">
+                    <h3 class="my-stamps">Offered Stamps</h3>
+                    <ul class="list-group list-group-vertical text-dark">
+                        <li th:each="stamp : ${offeredStamps}" th:object="${stamp}">
+                            <div class="my-stamps-first-row">
+                                <div class="img1">
+                                    <img id="image" width="85px" th:src="@{*{imageUrl}}"
+                                         alt="https://t4.ftcdn.net/jpg/06/32/52/81/240_F_632528193_8N5wScRTSIYpF9Gv7fccYXj810z0yazx.jpg"
+                                         height="85" style="padding-top: 0.3em; padding-left: 0.3em; margin-top: 2.3em">
+                                </div>
+                                <div class="stamp-info">
+                                    <p th:text="*{'Name: ' + name}"></p>
+                                    <p th:text="*{'Description: ' + description}"></p>
+                                </div>
+                            </div>
+                            <div class="buttons-info">
+                                <div class="favorite">
+                                    <p><a th:href="@{/wishlist/add/{id}(id=*{id})}"
+                                          class="btn-outline-info btn">To Wishlist</a></p>
+                                </div>
+                            </div>
+                            <div class="second-info">
+                                <p th:text="*{'Added by: ' + ownerUsername}"></p>
+                                <p></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="home-fields" style="height: 39vh; overflow: auto">
+                    <h3 class="my-stamps">My Wishlist</h3>
+                    <div class="wish-list">
+                        <table class="my-table">
+                            <tr th:each="stamp : ${loggedIn.wishedStamps}" th:object="${stamp}" class="my-stamps">
+                                <th style="text-align: start; width: 55px">
+                                    <img th:src="@{*{imageUrl}}" alt="" width="55px"
+                                         height="55" style="padding-top: 0.1em; padding-left: 0.1em; padding-bottom: 0.1em">
+                                </th>
+                                <td th:text="*{name}" style="text-align: start; padding-left: 5px"></td>
+                                <td th:text="*{'Price: ' + price + '$'}" style="text-align: end; padding-right: 5px">
+                                    Price: {stampPrice} $
+                                </td>
+                                <td style="width: 15%; padding-top: 8px; padding-right: 5px">
+                                    <a th:href="@{/wishlist/delete/{id}(id=*{id})}" class="btn-danger btn">Remove</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="buttons-info">
+                        <p style="margin-top: 10px"><a th:href="@{/wishlist/purchaseAll}" class="btn-info btn">Buy all
+                        </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>
